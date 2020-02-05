@@ -1,0 +1,107 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"><img src="../assets/Images/Inspeyered-01.png"></a>
+    </div>
+      <ul class="nav navbar-nav">
+        <li class="active">Sign In</li>
+      </ul>
+  </div>
+</nav>
+  <div class="row header-row bg-light">
+    <div class="col-12 header-col">
+      <h2>Get Inspired.</h2>
+    </div>
+  </div>
+  <div class="row search-row">
+    <div class="col-md-12 col-sm-12 col-xs-12 search-col">
+      <p>Find inspiration to create your next masterpiece.</p>
+<!--This is where the ngModel Data for the Search Query is placed to update the query string-->
+      <input class="w-50 p-3 text-muted" #box [(ngModel)]="query" type="text" (keyup.enter)="getPhotos()" value="Search for Artwork" > <!--#searchbox [(ngModel)]="" insert into code after model has been set -->
+      <button class="p-3" (click)="getPhotos()">Search</button>
+
+    </div>
+  </div>
+
+      <div class="row arrow-row">
+        <div class="col-lg-12 pgoption-col">
+          <div *ngIf="jsonResults" class="row justify-content-center">
+            <div class="col-3 pgoption">
+              <button (click)="previousPage()">Previous</button>
+              <button (click)="nextPage()">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  <div class="row">
+    <div class="col-lg-8 col-md-8">
+      <div class="row">
+        <div class="col-lg-4 card-row"*ngFor="let items of jsonResults">
+
+<!--This is where the *ngFor loop iterates over the API Response object array assigned to jsonResults in the app component-->
+          <div class="card"  style="width: 16rem; height:100%;">
+           <a href="{{items.urls.regular}}" target="_blank">
+             <img class="card-img-top" src="{{items.urls.regular}}" alt="{{items.alt_description}}"></a>
+               <div class="card-body">
+               <h5 class="card-title">{{items.alt_description}}</h5>
+               <a href="#" (click)="addToList(items.alt_description, items.urls.regular)"class="btn btn-primary">Save To List</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row pgoption-row">
+          <div class="col-lg-12 pgoption-col">
+            <div *ngIf="jsonResults" class="row justify-content-center">
+              <div class="col-4 pgoption">
+                <button (click)="previousPage()">Previous</button>
+                <button (click)="nextPage()">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Inspiration List</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+<!--This is where the list data is pulled from the array inspirationList.-->
+          <tr *ngFor="let items of inspirationList; let i = index"><!-- Put *ngFor and let items of data; i = index OR figure how to add to list with past assignment-->
+          <th scope="row">{{i + 1}}</th>
+          <a href="{{items.url}}" target="_blank">
+          <td>{{items.name}}</td></a>
+          <td><button (click)="removeItem()">Delete</button></td>
+          </tr>
+
+
+
+        </tbody>
+      </table>
+          <button (click)="clearLocalStorage()">Clear List</button>
+    </div>
+  </div>
+
+  <div class="row my-list" *ngIf="inspirationList">
+    <div *ngIf="inspirationList[0] != undefined" class="col-lg-12 list-head">
+      <h2>My Inspiration List</h2>
+    </div>
+  </div>
+  <div class="row inspiration-row">
+    <div class="col-lg-12 inspiration-col">
+      <a *ngFor="let items of inspirationList" href="{{items.url}}" target="_blank">
+      <img src="{{items.url}}" alt="{{items.name}}"></a>
+    </div>
+  </div>
+ <footer class="footer">
+   <div class="container background: #000000;">
+     <span> &copy; Dhiraj Totwani 2019</span>
+   </div>
+ </footer>
+<router-outlet></router-outlet>
